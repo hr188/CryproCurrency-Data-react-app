@@ -16,7 +16,6 @@ const Exchanges = () => {
     const fetchExchanges = async () => {
       try {
         const response = await axios.get(`${server}/exchanges`);
-        console.log('Response data:', response.data);
         setExchanges(response.data); // Assuming the data is an array of objects
         setLoading(false);
       } catch (error) {
