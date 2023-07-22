@@ -3,12 +3,14 @@ import axios from 'axios'
 import server from '../index'
 import { Container, HStack, VStack ,Image, Heading ,Text} from '@chakra-ui/react';
 import Loader from './Loader';
+import Error from './Error';
 
 
 const Exchanges = () => {
 
   const [exchanges,setExchanges] = useState([]);   
   const [loading,setLoading] = useState(true);  
+  const [erroR ,catcherror] = useState(false);
 
   useEffect(() => {
     const fetchExchanges = async () => {
@@ -18,16 +20,23 @@ const Exchanges = () => {
         setExchanges(response.data); // Assuming the data is an array of objects
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching exchanges:', error);
+        catcherror(true);
+        setLoading(false);
       }
     };
     fetchExchanges();
   }, []);
+    if(erroR){
+        return(
+        <Error/>
+        );
+    }
+
   return (
     <Container maxW={'container.xl'} >
         {
             loading?<Loader/> : <>
-            <HStack wrap={'wrap'}>
+            <HStack wrap={'wrap'} justifyContent={'space-evenly'}>
             {exchanges.map((i) => (
             <Exchangecard  key={i.id} name={i.name} url={i.url} img={i.image} rank ={i.trust_score_rank} />
             ))}
